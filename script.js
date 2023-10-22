@@ -14,6 +14,7 @@ magnitudeletters.split("").forEach((m, i) => {
     [m + "iB", Math.pow(1024, i) * 8]
   )
 });
+//TODO: remove "iB" from magnitudes, its the same as B
 
 document.querySelectorAll(".magnitude").forEach(element =>
   magnitudes.forEach(magnitude => {
@@ -41,18 +42,30 @@ const outputmagnitudefield = document.querySelector("#output > select.magnitude"
 const outputtimeframefield = document.querySelector("#output > select.timeframe")
 
 
-inputnumberfield.oninput = calculate
-inputmagnitudefield.oninput = calculate
-inputtimeframefield.oninput = calculate
-outputmagnitudefield.oninput = calculate
-outputtimeframefield.oninput = calculate
-function calculate() {
-  console.log("calculate")
-  const inputspeed = inputnumberfield.value
-  const inputmagnitude = inputmagnitudefield.value
-  const inputtimeframe = inputtimeframefield.value
-  const outputmagnitude = outputmagnitudefield.value
-  const outputtimeframe = outputtimeframefield.value
-  outputnumberfield.value =
-    inputspeed / inputmagnitude / inputtimeframe * outputmagnitude * outputtimeframe
+document.querySelectorAll(".inputline > input, .inputline > select")
+  .forEach(input => input.oninput = oninput)
+function oninput(e) {
+  let target = e.target
+  let inputline = target.parentElement
+  if (target != inputline.querySelector("input[name=speed]"))
+    inputline = selectAnyOtherInputline(inputline)
+  calculate(inputline)
+}
+
+function selectAnyOtherInputline(inputline) {
+  let inputlines = [...document.querySelectorAll(".inputline")]
+  inputlines = inputlines.filter(il => il != inputline)
+  return inputlines[0] ?? inputline
+}
+
+function calculate(origin) {
+  const inputspeed = origin.querySelector("input[name=speed]").value
+  const inputmagnitude = origin.querySelector("select.magnitude").value
+  const inputtimeframe = origin.querySelector("select.timeframe").value
+  document.querySelectorAll(".inputline").forEach(outputline => {
+    const outputmagnitude = outputline.querySelector("select.magnitude").value
+    const outputtimeframe = outputline.querySelector("select.timeframe").value
+    outputline.querySelector("input[name=speed]").value =
+      inputspeed / inputmagnitude / inputtimeframe * outputmagnitude * outputtimeframe
+  })
 }
