@@ -11,35 +11,27 @@
 
   <body>
     <h1>Bandwidth Calculator</h1>
-    <div>
-      <div class="inputline">
-        <input type="number" name="speed">
-        <select name="magnitude" class="magnitude"></select>
-        <p class="per">/</p>
-        <select name="timeframe" class="timeframe"></select>
-      </div>
-      <div class="inputline">
-        <input type="number" name="speed">
-        <select name="magnitude" class="magnitude"></select>
-        <p class="per">/</p>
-        <select name="timeframe" class="timeframe"></select>
-      </div>
-      <div class="inputline">
-        <input type="number" name="speed">
-        <select name="magnitude" class="magnitude"></select>
-        <p class="per">/</p>
-        <select name="timeframe" class="timeframe"></select>
-      </div>
+    <div id="input">
+      <template id="inputline">
+        <div class="inputline">
+          <input type="number" name="speed" step="any">
+          <select name="magnitude" class="magnitude"></select>
+          <p class="per">/</p>
+          <select name="timeframe" class="timeframe"></select>
+        </div>
+      </template>
     </div>
-    <div>
-      <div class="outputline">
-        A download of
-        <input type="number" name="size" value="1">
-        <select name="magnitude" class="magnitude" default="GiB"></select>
-        takes
-        <p class="duration"></p>
-        <select name="timeframe" class="timeframe"></select>
-      </div>
+    <div id="output">
+      <template id="outputline">
+        <div class="outputline">
+          A download of
+          <input type="number" name="size" step="any">
+          <select name="magnitude" class="magnitude"></select>
+          takes
+          <p class=" duration"></p>
+          <select name="timeframe" class="timeframe"></select>
+        </div>
+      </template>
     </div>
   </body>
 
