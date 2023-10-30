@@ -16,5 +16,5 @@
   "html.format.indentInnerHtml": true,
   "html.format.endWithNewline": true,
   "html.format.wrapAttributes": "preserve-aligned",
-  "html.format.preserveNewLines": false,
+  "html.format.preserveNewLines": true,
 }

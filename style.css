@@ -2,3 +2,22 @@ body {
   background-color: black;
   color: white;
 }
+
+p {
+  margin: 0;
+}
+
+input,
+select,
+p {
+  margin-inline: 0.5ch;
+}
+
+.inputline,
+.outputline {
+  display: flex;
+}
+
+.duration {
+  font-family: monospace;
+}

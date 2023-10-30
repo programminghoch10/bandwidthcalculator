@@ -16,14 +16,17 @@ magnitudeletters.split("").forEach((m, i) => {
 });
 //TODO: remove "iB" from magnitudes, its the same as B
 
-document.querySelectorAll(".magnitude").forEach(element =>
+document.querySelectorAll(".magnitude").forEach(element => {
   magnitudes.forEach(magnitude => {
     const option = document.createElement("option")
     option.innerText = magnitude[0]
     option.value = magnitude[1]
     element.appendChild(option)
   })
-)
+  if (element.getAttribute("default")) {
+    element.value = magnitudes.find(m => m[0] === element.getAttribute("default"))[1]
+  }
+})
 
 document.querySelectorAll(".timeframe").forEach(element =>
   timeframes.forEach(timeframe => {
@@ -34,16 +37,9 @@ document.querySelectorAll(".timeframe").forEach(element =>
   })
 )
 
-const inputnumberfield = document.querySelector("#input > input[name=speed]")
-const inputmagnitudefield = document.querySelector("#input > select.magnitude")
-const inputtimeframefield = document.querySelector("#input > select.timeframe")
-const outputnumberfield = document.querySelector("#output > input[name=speed]")
-const outputmagnitudefield = document.querySelector("#output > select.magnitude")
-const outputtimeframefield = document.querySelector("#output > select.timeframe")
-
-
-document.querySelectorAll(".inputline > input, .inputline > select")
-  .forEach(input => input.oninput = oninput)
+document.querySelectorAll(
+  ".inputline > input, .inputline > select, .outputline > input, .outputline > select"
+).forEach(input => input.oninput = oninput)
 function oninput(e) {
   let target = e.target
   let inputline = target.parentElement
@@ -66,6 +62,13 @@ function calculate(origin) {
     const outputmagnitude = outputline.querySelector("select.magnitude").value
     const outputtimeframe = outputline.querySelector("select.timeframe").value
     outputline.querySelector("input[name=speed]").value =
-      inputspeed / inputmagnitude / inputtimeframe * outputmagnitude * outputtimeframe
+      inputspeed * inputmagnitude * inputtimeframe / outputmagnitude / outputtimeframe
+  })
+  document.querySelectorAll(".outputline").forEach(outputline => {
+    const outputsize = outputline.querySelector("input[name=size]").value
+    const outputmagnitude = outputline.querySelector("select.magnitude").value
+    const outputtimeframe = outputline.querySelector("select.timeframe").value
+    outputline.querySelector(".duration").innerText =
+      (outputsize * outputmagnitude) / (inputspeed * inputmagnitude * inputtimeframe) / outputtimeframe
   })
 }
