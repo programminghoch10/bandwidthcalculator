@@ -86,9 +86,10 @@ document.querySelectorAll(
   ".inputline > input, .inputline > select, .outputline > input, .outputline > select"
 ).forEach(input => input.oninput = oninput)
 function oninput(e) {
+  let inputline
   if (e) {
     let target = e.target
-    let inputline = target.parentElement
+    inputline = target.parentElement
     if (target != inputline.querySelector("input[name=speed]"))
       inputline = selectAnyOtherInputline(inputline)
   } else {
@@ -108,6 +109,7 @@ function calculate(origin) {
   const inputmagnitude = origin.querySelector("select.magnitude").value
   const inputtimeframe = origin.querySelector("select.timeframe").value
   document.querySelectorAll(".inputline").forEach(outputline => {
+    if (outputline === origin) return
     const outputmagnitude = outputline.querySelector("select.magnitude").value
     const outputtimeframe = outputline.querySelector("select.timeframe").value
     outputline.querySelector("input[name=speed]").value =
