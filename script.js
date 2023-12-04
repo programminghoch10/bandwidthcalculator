@@ -111,13 +111,13 @@ function calculate(origin) {
     const outputmagnitude = outputline.querySelector("select.magnitude").value
     const outputtimeframe = outputline.querySelector("select.timeframe").value
     outputline.querySelector("input[name=speed]").value =
-      (inputspeed * inputmagnitude * inputtimeframe) / (outputmagnitude / outputtimeframe)
+      (inputspeed * inputmagnitude * inputtimeframe) / (outputmagnitude * outputtimeframe)
   })
   document.querySelectorAll(".outputline").forEach(outputline => {
     const outputsize = outputline.querySelector("input[name=size]").value
     const outputmagnitude = outputline.querySelector("select.magnitude").value
     const outputtimeframe = outputline.querySelector("select.timeframe").value
     outputline.querySelector(".duration").innerText =
-      (outputsize * outputmagnitude) / (inputspeed * inputmagnitude * inputtimeframe) / outputtimeframe
+      (outputsize * outputmagnitude) / ((inputspeed * inputmagnitude) / inputtimeframe) / outputtimeframe
   })
 }
