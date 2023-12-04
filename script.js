@@ -68,6 +68,7 @@ function createInputLine(config) {
   inputdiv.appendChild(inputline)
 }
 defaultinputlines.forEach(config => createInputLine(config))
+document.querySelector(".inputline > input[name=speed]").focus()
 
 const outputlinetemplate = document.querySelector("template#outputline")
 const outputdiv = document.querySelector("div#output")
