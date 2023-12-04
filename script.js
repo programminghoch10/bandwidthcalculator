@@ -58,6 +58,7 @@ function populateSelections(element) {
 const inputlinetemplate = document.querySelector("template#inputline")
 const inputdiv = document.querySelector("div#input")
 function createInputLine(config) {
+  config = config ?? {}
   const inputline = inputlinetemplate.content.cloneNode(true)
   populateSelections(inputline)
   if (config.speed)
@@ -71,6 +72,7 @@ defaultinputlines.forEach(config => createInputLine(config))
 const outputlinetemplate = document.querySelector("template#outputline")
 const outputdiv = document.querySelector("div#output")
 function createOutputLine(config) {
+  config = config ?? {}
   const outputline = outputlinetemplate.content.cloneNode(true)
   populateSelections(outputline)
   outputline.querySelector("input[name=size]").value = config.size ?? 1
