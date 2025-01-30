@@ -11,6 +11,7 @@
   "files.insertFinalNewline": true,
   "files.trimFinalNewlines": true,
   "files.trimTrailingWhitespace": true,
+  "liveServer.settings.port": 5505,
   // html
   "html.format.enable": true,
   "html.format.indentInnerHtml": true,
