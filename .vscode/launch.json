@@ -5,7 +5,7 @@
       "name": "Launch Chrome debugging session",
       "type": "chrome",
       "request": "launch",
-      "url": "http://localhost:5505",
+      "url": "file://${workspaceFolder}/index.html",
     }
   ]
 }
