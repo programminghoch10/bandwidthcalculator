@@ -1,13 +1,13 @@
 
 const magnitudeletters = " KMGT"
 const timeframes = [
-  ["s", 1],
-  ["m", 60],
-  ["h", 60 * 60],
-  ["d", 60 * 60 * 24],
-  ["W", 60 * 60 * 7],
-  ["M", 60 * 60 * 30.5],
-  ["Y", 60 * 60 * 24 * 365.25],
+  ["s", 1, "seconds"],
+  ["m", 60, "minutes"],
+  ["h", 60 * 60, "hours"],
+  ["d", 60 * 60 * 24, "days"],
+  ["W", 60 * 60 * 7, "weeks"],
+  ["M", 60 * 60 * 30.5, "months"],
+  ["Y", 60 * 60 * 24 * 365.25, "years"],
 ]
 function getTimeframe(string) {
   return timeframes.find(t => t[0] === string)[1]
@@ -20,7 +20,7 @@ magnitudeletters.split("").forEach((m, i) => {
     [m + "B", Math.pow(1000, i) * 8],
     [m + "iB", Math.pow(1024, i) * 8]
   )
-});
+})
 function getMagnitude(string) {
   return magnitudes.find(m => m[0] === string)[1]
 }
@@ -34,10 +34,10 @@ const defaultinputlines = [
 const defaultoutputlines = [
   { size: 1, magnitude: getMagnitude("GB"), timeframe: getTimeframe("s") },
   { size: 700, magnitude: getMagnitude("MB"), timeframe: getTimeframe("s") },
-  { size: 4.7, magnitude: getMagnitude("GB"), timeframe: getTimeframe("s") },
+  { size: 4.7, magnitude: getMagnitude("GB") },
 ]
 
-function populateSelections(element) {
+function populateSelections(element, allowemptytimeframe) {
   const magnitudeSelect = element.querySelector(".magnitude")
   magnitudes.forEach(magnitude => {
     const option = document.createElement("option")
@@ -46,7 +46,12 @@ function populateSelections(element) {
     magnitudeSelect.appendChild(option)
   })
 
+  allowemptytimeframe ??= false
   const timeframeselect = element.querySelector(".timeframe")
+  if (allowemptytimeframe) {
+    const option = document.createElement("option")
+    timeframeselect.appendChild(option)
+  }
   timeframes.forEach(timeframe => {
     const option = document.createElement("option")
     option.innerText = timeframe[0]
@@ -75,10 +80,10 @@ const outputdiv = document.querySelector("div#output")
 function createOutputLine(config) {
   config = config ?? {}
   const outputline = outputlinetemplate.content.cloneNode(true)
-  populateSelections(outputline)
+  populateSelections(outputline, true)
   outputline.querySelector("input[name=size]").value = config.size ?? 1
   outputline.querySelector("select[name=magnitude]").value = config.magnitude ?? getMagnitude("MB")
-  outputline.querySelector("select[name=timeframe]").value = config.timeframe ?? getTimeframe("s")
+  outputline.querySelector("select[name=timeframe]").value = config.timeframe ?? ""
   outputdiv.appendChild(outputline)
 }
 defaultoutputlines.forEach(config => createOutputLine(config))
@@ -121,7 +126,20 @@ function calculate(origin) {
   document.querySelectorAll(".outputline").forEach(outputline => {
     const outputsize = outputline.querySelector("input[name=size]").value
     const outputmagnitude = outputline.querySelector("select.magnitude").value
-    const outputtimeframe = outputline.querySelector("select.timeframe").value
+    var outputtimeframe = outputline.querySelector("select.timeframe").value
+    if (outputtimeframe == "") {
+      const outputwithouttimeframe = (outputsize * outputmagnitude) / ((inputspeed * inputmagnitude) / inputtimeframe)
+      const outputtimeframe = timeframes
+        .map(timeframe => [timeframe, outputwithouttimeframe / timeframe[1]])
+        .reduce((a, b) => {
+          if (Math.floor(a[1]) == 0) return b
+          if (Math.floor(b[1]) == 0) return a
+          return Math.floor(a[1]) < Math.floor(b[1]) ? a : b
+        })[0]
+      outputline.querySelector(".duration").innerText =
+        (outputwithouttimeframe / outputtimeframe[1]) + " " + outputtimeframe[2]
+      return
+    }
     outputline.querySelector(".duration").innerText =
       (outputsize * outputmagnitude) / ((inputspeed * inputmagnitude) / inputtimeframe) / outputtimeframe
   })
