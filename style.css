@@ -1,6 +1,5 @@
-body {
-  background-color: black;
-  color: white;
+:root {
+  color-scheme: light dark;
 }
 
 p {
