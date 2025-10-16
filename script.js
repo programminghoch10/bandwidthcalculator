@@ -55,14 +55,14 @@ HTMLParagraphElement.prototype.setOutputNumber = function (number, suffix) {
   this.innerText = number + suffix
 }
 
-HTMLTextAreaElement.prototype.setInputNumber = function (number) {
+HTMLInputElement.prototype.setInputNumber = function (number) {
   if (DECIMAL_PLACES_INPUT)
     number = Math.roundpl(number, DECIMAL_PLACES_INPUT)
   this.value = number
 }
 
 HTMLElement.prototype.setNumber = function (number) {
-  if (this instanceof HTMLTextAreaElement)
+  if (this instanceof HTMLInputElement)
     return this.setInputNumber(...arguments)
   if (this instanceof HTMLParagraphElement)
     return this.setOutputNumber(...arguments)
@@ -126,13 +126,21 @@ oninput()
 document.querySelectorAll(
   ".inputline > input, .inputline > select, .outputline > input, .outputline > select"
 ).forEach(input => input.oninput = oninput)
+var lastUsedTextInputLineField = undefined
 function oninput(e) {
   let inputline
   if (e) {
     let target = e.target
     inputline = target.parentElement
-    if (target != inputline.querySelector("input[name=speed]"))
-      inputline = selectAnyOtherInputline(inputline)
+    if (inputline.classList.contains("inputline")) {
+      if (target instanceof HTMLInputElement)
+        lastUsedTextInputLineField = target
+      else
+        target = lastUsedTextInputLineField ?? target
+      inputline = target.parentElement
+    } else {
+      inputline = selectAnyOtherInputline()
+    }
   } else {
     inputline = selectAnyOtherInputline()
   }
