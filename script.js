@@ -156,10 +156,20 @@ function selectAnyOtherInputline(inputline) {
   return inputlines[0] ?? inputline
 }
 
+document.addEventListener("keydown", (event) => {
+  const key = event.key
+  if (key == "Escape") {
+    event.preventDefault()
+    lastUsedTextInputLineField = undefined
+    highlightReferenceInput()
+  }
+})
+
 function highlightReferenceInput(input) {
   document.querySelectorAll("input.reference")
     .forEach(e => e.classList.remove("reference"))
-  input.classList.add("reference")
+  if (input)
+    input.classList.add("reference")
 }
 
 function calculate(origin) {
