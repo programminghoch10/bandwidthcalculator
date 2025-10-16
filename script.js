@@ -137,6 +137,7 @@ function oninput(e) {
         lastUsedTextInputLineField = target
       else
         target = lastUsedTextInputLineField ?? target
+      highlightReferenceInput(target)
       inputline = target.parentElement
     } else {
       inputline = selectAnyOtherInputline()
@@ -148,9 +149,17 @@ function oninput(e) {
 }
 
 function selectAnyOtherInputline(inputline) {
+  if (lastUsedTextInputLineField)
+    return lastUsedTextInputLineField.parentElement
   let inputlines = [...document.querySelectorAll(".inputline")]
   inputlines = inputlines.filter(il => il != inputline)
   return inputlines[0] ?? inputline
+}
+
+function highlightReferenceInput(input) {
+  document.querySelectorAll("input.reference")
+    .forEach(e => e.classList.remove("reference"))
+  input.classList.add("reference")
 }
 
 function calculate(origin) {
