@@ -13,6 +13,10 @@ function getTimeframe(string) {
   return timeframes.find(t => t[0] === string)[1]
 }
 
+// round to specified amount of decimal places, undefined to disable rounding
+const DECIMAL_PLACES_OUTPUT = 3
+const DECIMAL_PLACES_INPUT = undefined
+
 const magnitudes = []
 magnitudeletters.split("").forEach((m, i) => {
   magnitudes.push(
@@ -36,6 +40,35 @@ const defaultoutputlines = [
   { size: 700, magnitude: getMagnitude("MB"), timeframe: getTimeframe("s") },
   { size: 4.7, magnitude: getMagnitude("GB") },
 ]
+
+Math.roundpl = function (number, places) {
+  const factor = Math.pow(10, places)
+  return Math.round(number * factor) / factor
+}
+
+HTMLParagraphElement.prototype.setOutputNumber = function (number, suffix) {
+  suffix ??= ""
+  if (suffix) suffix = " " + suffix
+  // round number
+  if (DECIMAL_PLACES_OUTPUT)
+    number = Math.roundpl(number, DECIMAL_PLACES_OUTPUT)
+  this.innerText = number + suffix
+}
+
+HTMLTextAreaElement.prototype.setInputNumber = function (number) {
+  if (DECIMAL_PLACES_INPUT)
+    number = Math.roundpl(number, DECIMAL_PLACES_INPUT)
+  this.value = number
+}
+
+HTMLElement.prototype.setNumber = function (number) {
+  if (this instanceof HTMLTextAreaElement)
+    return this.setInputNumber(...arguments)
+  if (this instanceof HTMLParagraphElement)
+    return this.setOutputNumber(...arguments)
+  console.error("no submatch for setNumber found", this)
+  this.innerText = number
+}
 
 function populateSelections(element, allowemptytimeframe) {
   const magnitudeSelect = element.querySelector(".magnitude")
@@ -136,11 +169,11 @@ function calculate(origin) {
           if (Math.floor(b[1]) == 0) return a
           return Math.floor(a[1]) < Math.floor(b[1]) ? a : b
         })[0]
-      outputline.querySelector(".duration").innerText =
-        (outputwithouttimeframe / outputtimeframe[1]) + " " + outputtimeframe[2]
+      outputline.querySelector(".duration").setOutputNumber(outputwithouttimeframe / outputtimeframe[1], outputtimeframe[2])
       return
     }
-    outputline.querySelector(".duration").innerText =
+    outputline.querySelector(".duration").setNumber(
       (outputsize * outputmagnitude) / ((inputspeed * inputmagnitude) / inputtimeframe) / outputtimeframe
+    )
   })
 }
