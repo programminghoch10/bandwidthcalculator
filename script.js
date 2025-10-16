@@ -163,6 +163,7 @@ function calculate(origin) {
     if (outputtimeframe == "") {
       const outputwithouttimeframe = (outputsize * outputmagnitude) / ((inputspeed * inputmagnitude) / inputtimeframe)
       const outputtimeframe = timeframes
+        .sort((a, b) => b[1] - a[1])
         .map(timeframe => [timeframe, outputwithouttimeframe / timeframe[1]])
         .reduce((a, b) => {
           if (Math.floor(a[1]) == 0) return b
