@@ -27,3 +27,13 @@ p {
 input.reference {
   border-color: red;
 }
+
+img#github {
+  height: 0.65em;
+}
+
+@media (prefers-color-scheme: light) {
+  img#github {
+    filter: invert();
+  }
+}
