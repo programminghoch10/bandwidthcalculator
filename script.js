@@ -5,8 +5,8 @@ const timeframes = [
   ["m", 60, "minutes"],
   ["h", 60 * 60, "hours"],
   ["d", 60 * 60 * 24, "days"],
-  ["W", 60 * 60 * 7, "weeks"],
-  ["M", 60 * 60 * 30.5, "months"],
+  ["W", 60 * 60 * 24 * 7, "weeks"],
+  ["M", 60 * 60 * 24 * 30.5, "months"],
   ["Y", 60 * 60 * 24 * 365.25, "years"],
 ]
 function getTimeframe(string) {
