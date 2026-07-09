@@ -36,8 +36,8 @@ const defaultinputlines = [
   { magnitude: getMagnitude("GB"), timeframe: getTimeframe("h") },
 ]
 const defaultoutputlines = [
-  { size: 1, magnitude: getMagnitude("GB"), timeframe: getTimeframe("s") },
-  { size: 700, magnitude: getMagnitude("MB"), timeframe: getTimeframe("s") },
+  { size: 1, magnitude: getMagnitude("GB") },
+  { size: 700, magnitude: getMagnitude("MB") },
   { size: 4.7, magnitude: getMagnitude("GB") },
 ]
 
