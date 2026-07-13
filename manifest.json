@@ -1,0 +1,16 @@
+{
+  "name": "Bandwidth Calculator",
+  "short_name": "BW",
+  "start_url": ".",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "logo.svg",
+      "sizes": "any",
+      "purpose": "any monochrome maskable"
+    }
+  ],
+  "categories": [
+    "utilities"
+  ]
+}

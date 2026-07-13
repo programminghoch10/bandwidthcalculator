@@ -17,6 +17,9 @@
   "html.format.endWithNewline": true,
   "html.format.wrapAttributes": "preserve-aligned",
   "html.format.preserveNewLines": true,
+  "files.associations": {
+    "*.svg": "html",
+  },
   // css
   "css.format.enable": true,
   "css.format.newlineBetweenRules": true,
